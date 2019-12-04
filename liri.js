@@ -7,16 +7,19 @@ var spotify = new Spotify(keys.spotify);
 
 switch (process.argv[2]) {
     case "concert-this":
-
+        concert(process.argv[3])
         break;
-    case "concert-this":
 
+    case "spotify-this-song":
+        song(process.argv[3])
         break;
-    case "concert-this":
 
+    case "movie-this":
+        movie(process.argv[3])
         break;
-    case "concert-this":
 
+    case "do-what-it-says":
+        randomTxt()
         break;
 
     default:
