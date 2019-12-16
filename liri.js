@@ -4,7 +4,8 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 var moment = require('moment');
-//moment().format();
+var fs = require("fs");
+
 
 
 const song = function (input) {
@@ -60,7 +61,7 @@ const concert = function (input) {
 const movie = function (input) {
 
 
-    var queryUrl = "http://www.omdbapi.com/?t=" + input/* || "Mr. Nobody"*/ + "&y=&plot=short&apikey=trilogy";
+    var queryUrl = "http://www.omdbapi.com/?t=" + (input || "Mr. Nobody") + "&y=&plot=short&apikey=trilogy";
     axios.get(queryUrl).then(
         function (response) {
             //console.log(JSON.stringify(response.data, null, 2))
@@ -91,6 +92,38 @@ const movie = function (input) {
         });
 }
 
+const randomTxt = function () {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+
+        if (error) {
+            return console.log(error);
+        }
+
+        //console.log(data);
+
+        var dataArr = data.split(",");
+
+        //console.log(dataArr);
+
+        switch (dataArr[0]) {
+            case "concert-this":
+                concert(dataArr[1].trim())
+                break;
+
+            case "spotify-this-song":
+                song(dataArr[1].trim())
+                break;
+
+            case "movie-this":
+                movie(dataArr[1].trim())
+                break;
+
+            default:
+                break;
+        }
+    });
+}
+
 switch (process.argv[2]) {
     case "concert-this":
         concert(process.argv[3])
@@ -104,9 +137,9 @@ switch (process.argv[2]) {
         movie(process.argv[3])
         break;
 
-    // case "do-what-it-says":
-    //     randomTxt()
-    //     break;
+    case "do-what-it-says":
+        randomTxt()
+        break;
 
     default:
         break;
